@@ -1,0 +1,119 @@
+---
+
+---
+
+<div id="container">
+    <main>
+        <section id="hero">
+            <div class="text-wrapper">
+                <h1>madpiece</h1>
+                <h2>creative label<span>*</span></h2>
+                <div class="topics-wrapper">
+                    <p>agency Creativity</p>
+                    <p>startup Innovation</p>
+                    <p>software<span class="sh-space"> </span>house Quality</p>
+                    <p>collective Mindset</p>
+                    <hr />
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<style>
+    #container {
+        height: 100%;
+    }
+
+    main {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #hero {
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .text-wrapper {
+        position: relative;
+    }
+
+    .topics-wrapper {
+        position: absolute;
+        bottom: calc(100% + 1em);
+        right: 0;
+        width: 300px;
+        text-align: right;
+        opacity: 0;
+        transition: opacity 0.25s ease-in-out;
+
+        p {
+            margin: 0;
+            margin-bottom: 0.25em;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 1.5em;
+
+            .sh-space {
+                display: inline-block;
+                width: 0.25em;
+            }
+
+            &:not(:first-child) {
+                position: relative;
+
+                &::before {
+                    content: '+';
+                    position: absolute;
+                    left: 0.5em;
+                }
+            }
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-family: 'Josefin Sans Variable', sans-serif;
+        font-size: 6em;
+        text-align: center;
+    }
+
+    h2 {
+        position: absolute;
+        top: 100%;
+        margin: 0;
+        font-family: 'Ubuntu Mono', monospace;
+        font-size: 3em;
+        cursor: pointer;
+
+        span {
+            position: absolute;
+            top: -0.25em;
+            right: -0.4em;
+        }
+
+        &:hover {
+            ~ .topics-wrapper {
+                display: inline-block;
+                opacity: 1;
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        h1 {
+            font-size: 5em;
+        }
+
+        h2 {
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1em;
+        }
+    }
+</style>
