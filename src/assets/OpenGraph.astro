@@ -1,0 +1,12 @@
+---
+const { title, description } = Astro.props;
+---
+
+<!-- Open Graph tags -->
+<meta property="og:title" content={title} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://www.madpiece.com/" />
+<meta property="og:description" content={description} />
+<meta property="og:image" content="https://www.madpiece.com/logo.png" />
+<meta property="og:image:alt" content=`${title} logo` />
+<meta property="og:locale" content="en_GB" />
