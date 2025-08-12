@@ -13,7 +13,7 @@
         "@astrojs/preact": "^4.0.11",
         "@fontsource-variable/josefin-sans": "^5.2.5",
         "@fontsource/ubuntu-mono": "^5.2.5",
-        "astro": "^5.7.10",
+        "astro": "^5.12.8",
         "preact": "^10.26.5"
     }
 }
