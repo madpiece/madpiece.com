@@ -1,6 +1,193 @@
+@import url(./fonts.css);
+@import 'tailwindcss';
+
 html,
 body {
     width: 100%;
     height: 100%;
     margin: 0;
+}
+
+a,
+a:focus {
+    color: #000000;
+}
+
+.intro-container {
+    h1 {
+        margin: 0;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 700;
+        font-size: 6em;
+        line-height: 1;
+        text-indent: -0.09em;
+
+        @media screen and (max-width: 40rem) {
+            font-size: 4em;
+        }
+    }
+
+    h2 {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        font-family: 'Ubuntu Mono', monospace;
+        font-weight: 400;
+        font-size: 3em;
+        line-height: 1;
+
+        @media screen and (max-width: 40rem) {
+            font-size: 2em;
+        }
+
+        span {
+            position: absolute;
+            top: -0.25em;
+            right: -0.4em;
+        }
+    }
+}
+
+.carousel-section {
+    position: relative;
+    width: 100vw;
+    margin-top: -15px;
+    user-select: none;
+    overflow: hidden;
+
+    span {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        padding: 0 5px;
+        background-color: #ffffff;
+        z-index: 1;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -20px;
+            width: 20px;
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+        }
+    }
+
+    span,
+    p,
+    font {
+        font-family: 'Ubuntu Mono', monospace;
+        font-weight: 400;
+        font-size: 1.2rem;
+    }
+
+    .word-carousel {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        will-change: transform;
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+}
+
+.we-container {
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 1.5em;
+    font-weight: 400;
+
+    p {
+        margin-bottom: 0.5em;
+    }
+
+    .ideas-container {
+        padding: 0.5em;
+
+        p {
+            margin: 0;
+        }
+
+        img {
+            max-width: 40px;
+        }
+
+        .stats-container {
+            margin: 0 0.5em;
+
+            .stats-total {
+                font-size: 0.75em;
+            }
+
+            .stats-categories {
+                display: flex;
+                font-size: 0.5em;
+                color: grey;
+            }
+        }
+    }
+
+    .cta-container  {
+        a {
+            background: #000000;
+            font-size: 0.75em;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            transition: 0.5s;
+
+            &:hover {
+                background: #ffffff;
+                color: #000000;
+                border: 1px solid #000000;
+            }
+        }
+    }
+}
+
+.manifesto-container {
+    h1 {
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        font-size: 6em;
+        line-height: 1;
+        text-indent: -0.09em;
+
+        @media screen and (max-width: 40rem) {
+            font-size: 3em;
+        }
+    }
+
+    article {
+        h3 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 400;
+            font-size: 1.5em;
+            line-height: 1;
+            text-indent: -0.09em;
+        }
+
+        p {
+            font-family: 'Ubuntu Mono', monospace;
+            font-weight: 400;
+        }
+    }
+
+    article + article:not(:first-child) {
+        margin-top: 1em;
+    }
+}
+
+footer {
+    font-family: 'Ubuntu Mono', monospace;
+    font-weight: 400;
 }
