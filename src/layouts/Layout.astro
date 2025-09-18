@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Head from '../components/Head.astro';
+import { PosthogProvider } from '../components/PosthogProvider.tsx';
 ---
 
 <!doctype html>
@@ -9,6 +10,7 @@ import Head from '../components/Head.astro';
         <Head />
     </head>
     <body>
+        <PosthogProvider client:only="preact" />
         <slot />
     </body>
 </html>

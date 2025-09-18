@@ -167,7 +167,9 @@ a:focus {
         }
     }
 
-    article {
+    div {
+        margin-top: 1em;
+
         h3 {
             font-family: 'Josefin Sans', sans-serif;
             font-weight: 400;
@@ -180,10 +182,6 @@ a:focus {
             font-family: 'Ubuntu Mono', monospace;
             font-weight: 400;
         }
-    }
-
-    article + article:not(:first-child) {
-        margin-top: 1em;
     }
 }
 

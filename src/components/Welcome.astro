@@ -1,10 +1,11 @@
 ---
 import { Image } from 'astro:assets';
+import { EmailSpan } from './EmailSpan.tsx';
 
 const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
 const DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
 
-async function getDatabaseStats(databaseId) {
+async function getDatabaseStats(databaseId: string) {
     let hasMore = true;
     let nextCursor = undefined;
     let totalRows = 0;
@@ -91,7 +92,7 @@ try {
 
 <main class="overflow-x-hidden mb-20">
     <section
-        class="intro-container container mx-auto place-content-center place-items-center h-screen"
+        class="intro-container container mx-auto place-content-center grid place-items-center h-screen"
     >
         <div>
             <h1>madpiece</h1>
@@ -116,13 +117,13 @@ try {
                 working on a wide range of ideas and always looking for
                 like-minded people. Check our list and let us know which idea
                 you would like to join and what you can bring to madpiece -
-                collab@madpiece.com
+                <EmailSpan client:load>collab&#64;madpiece&#46;com</EmailSpan>
             </p>
             <div
                 class="ideas-container flex flex-row items-center border-1 border-gray-300 my-5"
             >
                 <div class="img-container flex items-center flex-none">
-                    <Image src="/public/logo.png" alt="madpiece logo" />
+                    <Image src="/logo.png" alt="madpiece logo" />
                 </div>
                 <div class="stats-container flex flex-col justify-center">
                     <p class="stats-total">
@@ -161,70 +162,70 @@ try {
             <p class="we-for_companies mt-15">
                 For companies that want to partner with our ideas or collaborate
                 together, let's connect and see how we can join forces -
-                partners@madpiece.com
+                <EmailSpan client:load>partners&#64;madpiece&#46;com</EmailSpan>
             </p>
         </article>
 
         <article class="manifesto-container">
             <h1>Manifesto</h1>
-            <article>
+            <div>
                 <h3>People first</h3>
                 <p>
                     Every person affected by our work matters — team members,
                     users, clients and communities.
                 </p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Always start with why (not)</h3>
                 <p>
                     Question everything, understand the purpose, match the
                     values.
                 </p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Critical thinking over opinions</h3>
                 <p>
                     Always open to being proven wrong and learning based on
                     facts.
                 </p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Social impact over individual profits</h3>
                 <p>Greater good for the people and the climate.</p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>No place for comfort</h3>
                 <p>
                     Growth and disruption happen at the edge of our comfort
                     zone.
                 </p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Walk the talk</h3>
                 <p>If we commit to something, we see it through to the end.</p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Work hard, play hard</h3>
                 <p>
                     While working, we do our best. Afterwards, we enjoy the
                     offline life.
                 </p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Break until it's unbreakable</h3>
                 <p>Good enough isn't good enough. Never settle!</p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Think big, start small</h3>
                 <p>Minimalism, low-tech and offline first.</p>
-            </article>
-            <article>
+            </div>
+            <div>
                 <h3>Profits for everyone involved</h3>
                 <p>
                     10% for the idea, 80% for the active team, 10% for the
                     company (for expenses and supporting more social projects).
                 </p>
-            </article>
+            </div>
         </article>
     </section>
 </main>

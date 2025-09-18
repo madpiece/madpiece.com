@@ -7,11 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.madpiece.com',
-  integrations: [preact()],
-  adapter: netlify(),
+    site: 'https://www.madpiece.com',
+    integrations: [preact()],
+    adapter: netlify(),
 
-  vite: {
-    plugins: [tailwindcss()],
-  },
+    vite: {
+        plugins: [tailwindcss()],
+    },
 });
