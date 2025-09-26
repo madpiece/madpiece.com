@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import { LinkTrack } from './LinkTrack';
+
+const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
+const DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
+
+async function getDatabaseStats(databaseId: string) {
+    let hasMore = true;
+    let nextCursor = undefined;
+    let totalRows = 0;
+    const categoryCounts = {};
+
+    while (hasMore) {
+        const requestBody = {
+            page_size: 100,
+            ...(nextCursor && { start_cursor: nextCursor }),
+        };
+
+        const response = await fetch(
+            `https://api.notion.com/v1/databases/${databaseId}/query`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${NOTION_TOKEN}`,
+                    'Notion-Version': '2022-06-28',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            }
+        );
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+                `HTTP error! status: ${response.status}, message: ${errorText}`
+            );
+        }
+
+        const data = await response.json();
+        totalRows += data.results.length;
+
+        // Count categories for each row
+        data.results.forEach((page) => {
+            const categoryProperty = page.properties.Category;
+            if (
+                categoryProperty?.type === 'multi_select' &&
+                categoryProperty.multi_select
+            ) {
+                // If a row has multiple categories, count it for each one
+                categoryProperty.multi_select.forEach((item) => {
+                    if (item.name) {
+                        categoryCounts[item.name] =
+                            (categoryCounts[item.name] || 0) + 1;
+                    }
+                });
+            } else {
+                // Count rows without any categories
+                categoryCounts['NoCategory'] =
+                    (categoryCounts['NoCategory'] || 0) + 1;
+            }
+        });
+
+        hasMore = data.has_more;
+        nextCursor = data.next_cursor;
+    }
+
+    // Sort categories by count (descending)
+    const sortedCategories = Object.entries(categoryCounts)
+        .sort(([, a], [, b]) => b - a)
+        .map(([name, count]) => ({ name, count }));
+
+    return {
+        totalRows,
+        categories: sortedCategories,
+    };
+}
+
+let stats = null;
+let error = null;
+
+try {
+    if (!DATABASE_ID || !NOTION_TOKEN) {
+        throw new Error('Missing environment variables');
+    }
+
+    stats = await getDatabaseStats(DATABASE_ID);
+} catch (e) {
+    error = e.message || 'Unknown error';
+}
+---
+
+<div
+    id="notionBlock"
+    class="ideas-container flex flex-row items-center border-1 border-gray-300 my-5"
+>
+    <div class="img-container flex items-center flex-none">
+        <Image src="/logo.png" alt="madpiece logo" />
+    </div>
+    <div class="stats-container flex flex-col justify-center">
+        <p class="stats-total">
+            Ideas: <span>{stats?.totalRows ?? 'TBD'}</span>
+        </p>
+        <p class="stats-categories">
+            Categories:&nbsp;
+            <span class="stats-cat-full hidden sm:inline-block">
+                {
+                    stats?.categories
+                        .map(({ name }) => `${name}`)
+                        .join(' • ') ?? 'TBD'
+                }
+            </span>
+            <span class="stats-cat-mobile sm:hidden">
+                {stats?.categories.length}
+            </span>
+        </p>
+    </div>
+    <div class="cta-container ml-auto flex items-center flex-none">
+        <LinkTrack
+            client:load
+            class="rounded-sm p-2"
+            href="https://www.notion.so/Ideas-2289d898104380038022fb841d930a79"
+            captureEvent="fullList_clicked">Full list</LinkTrack
+        >
+    </div>
+</div>

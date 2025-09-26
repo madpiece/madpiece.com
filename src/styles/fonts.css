@@ -1,3 +1,8 @@
+:root {
+    --JosefinSans: 'Josefin Sans', sans-serif;
+    --UbuntuMono: 'Ubuntu Mono', monospace;
+}
+
 @font-face {
     font-family: 'Josefin Sans';
     src: url('/fonts/Josefin_Sans/JosefinSans-Regular.ttf') format('truetype');

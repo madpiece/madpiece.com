@@ -1,111 +1,23 @@
 ---
-import { Image } from 'astro:assets';
-import { EmailSpan } from './EmailSpan.tsx';
-
-const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
-const DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
-
-async function getDatabaseStats(databaseId: string) {
-    let hasMore = true;
-    let nextCursor = undefined;
-    let totalRows = 0;
-    const categoryCounts = {};
-
-    while (hasMore) {
-        const requestBody = {
-            page_size: 100,
-            ...(nextCursor && { start_cursor: nextCursor }),
-        };
-
-        const response = await fetch(
-            `https://api.notion.com/v1/databases/${databaseId}/query`,
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${NOTION_TOKEN}`,
-                    'Notion-Version': '2022-06-28',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            }
-        );
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(
-                `HTTP error! status: ${response.status}, message: ${errorText}`
-            );
-        }
-
-        const data = await response.json();
-        totalRows += data.results.length;
-
-        // Count categories for each row
-        data.results.forEach((page) => {
-            const categoryProperty = page.properties.Category;
-            if (
-                categoryProperty?.type === 'multi_select' &&
-                categoryProperty.multi_select
-            ) {
-                // If a row has multiple categories, count it for each one
-                categoryProperty.multi_select.forEach((item) => {
-                    if (item.name) {
-                        categoryCounts[item.name] =
-                            (categoryCounts[item.name] || 0) + 1;
-                    }
-                });
-            } else {
-                // Count rows without any categories
-                categoryCounts['Uncategorized'] =
-                    (categoryCounts['Uncategorized'] || 0) + 1;
-            }
-        });
-
-        hasMore = data.has_more;
-        nextCursor = data.next_cursor;
-    }
-
-    // Sort categories by count (descending)
-    const sortedCategories = Object.entries(categoryCounts)
-        .sort(([, a], [, b]) => b - a)
-        .map(([name, count]) => ({ name, count }));
-
-    return {
-        totalRows,
-        categories: sortedCategories,
-    };
-}
-
-let stats = null;
-let error = null;
-
-try {
-    if (!DATABASE_ID || !NOTION_TOKEN) {
-        throw new Error('Missing environment variables');
-    }
-
-    stats = await getDatabaseStats(DATABASE_ID);
-} catch (e) {
-    error = e.message || 'Unknown error';
-}
+import { EmailTrack } from './EmailTrack.tsx';
+import { LinkTrack } from './LinkTrack.tsx';
+import NotionBlock from './NotionBlock.astro';
 ---
 
 <main class="overflow-x-hidden mb-20">
+    <div id="scrolldown-icon" class="scrolldown-icon">
+        <div class="chevrons">
+            <div class="chevronDown"></div>
+            <div class="chevronDown"></div>
+        </div>
+    </div>
     <section
         class="intro-container container mx-auto place-content-center grid place-items-center h-screen"
     >
         <div>
             <h1>madpiece</h1>
-            <h2>creative label<span>*</span></h2>
+            <h2>creative label</h2>
         </div>
-    </section>
-
-    <section class="carousel-section" id="carousel-section">
-        <span>*</span>
-        <p class="word-carousel" id="word-carousel">
-            agency Creativity | startup Innovation | software house Quality |
-            collective Mindset |
-        </p>
     </section>
 
     <section
@@ -113,56 +25,22 @@ try {
     >
         <article class="we-container">
             <p>
-                We are a team of multidisciplinary professionals actively
-                working on a wide range of ideas and always looking for
-                like-minded people. Check our list and let us know which idea
-                you would like to join and what you can bring to madpiece -
-                <EmailSpan client:load>collab&#64;madpiece&#46;com</EmailSpan>
+                We are the multi-disciplinary collective developing the ideas
+                behind the creative label madpiece.
             </p>
-            <div
-                class="ideas-container flex flex-row items-center border-1 border-gray-300 my-5"
-            >
-                <div class="img-container flex items-center flex-none">
-                    <Image src="/logo.png" alt="madpiece logo" />
-                </div>
-                <div class="stats-container flex flex-col justify-center">
-                    <p class="stats-total">
-                        Ideas: <span>
-                            {stats?.totalRows ?? 'TBD'}
-                        </span>
-                    </p>
-                    <p class="stats-categories">
-                        Categories:&nbsp;<span
-                            class="stats-cat-full hidden sm:inline-block"
-                        >
-                            {
-                                stats?.categories
-                                    // .map(({ name, count }) => `${name} (${count})`)
-                                    .map(({ name, count }) => `${name}`)
-                                    .join(' • ') ?? 'TBD'
-                            }
-                        </span>
-                        <span class="stats-cat-mobile sm:hidden">
-                            {stats?.categories.length}</span
-                        >
-                    </p>
-                </div>
-                <div class="cta-container ml-auto flex items-center flex-none">
-                    <a
-                        class="rounded-sm p-2"
-                        href="https://www.notion.so/Ideas-2289d898104380038022fb841d930a79"
-                        target="_blank">Full list</a
-                    >
-                </div>
-            </div>
+
+            <NotionBlock />
             <p>
-                You can also pitch us your ideas and get rewarded for your
-                creativity if they are selected.
+                Join us or pitch your idea <LinkTrack
+                    client:load
+                    href="https://airtable.com/appZ5ENG6d8cwvvoA/pagZjyp3oPHv0KSge/form"
+                    class="underline"
+                    captureEvent="joinUs_clicked">here</LinkTrack
+                >.
             </p>
-            <p class="we-for_companies mt-15">
-                For companies that want to partner with our ideas or collaborate
-                together, let's connect and see how we can join forces -
-                <EmailSpan client:load>partners&#64;madpiece&#46;com</EmailSpan>
+            <p class="we-for_companies mt-10">
+                For collaborations and commissioned projects -
+                <EmailTrack client:load>collab&#64;madpiece&#46;com</EmailTrack>
             </p>
         </article>
 
@@ -231,143 +109,16 @@ try {
 </main>
 
 <script>
-    const initCarousel = () => {
-        const container = document.getElementById('carousel-section');
-        const carousel = document.getElementById('word-carousel');
+    document.addEventListener('DOMContentLoaded', () => {
+        const scrollDownIcon = document.getElementById('scrolldown-icon');
+        if (!scrollDownIcon) return;
 
-        if (!container || !carousel) {
-            console.error('Carousel elements not found');
-            return;
-        }
-
-        const originalText = carousel.textContent?.trim() || '';
-
-        // Function to replicate text based on screen width
-        const setupText = () => {
-            if (!carousel) return 0;
-
-            carousel.textContent = originalText;
-
-            const singleTextWidth = carousel.offsetWidth;
-            const screenWidth = window.innerWidth;
-
-            // Calculate how many repetitions we need (at least 3 for safety on big screens)
-            const repetitions = Math.max(
-                3,
-                Math.ceil((screenWidth * 2) / singleTextWidth)
-            );
-
-            let repeatedText = '';
-            for (let i = 0; i < repetitions; i++) {
-                repeatedText += originalText + ' ';
-            }
-
-            carousel.textContent = repeatedText;
-            return singleTextWidth;
+        const toggleIcon = () => {
+            const atTop = window.scrollY <= 100;
+            scrollDownIcon.style.opacity = atTop ? '0.5' : '0';
         };
 
-        let currentX = 0;
-        let isDragging = false;
-        let startX = 0;
-        let animationSpeed = 1;
-
-        // Setup text and get segment width
-        let segmentWidth = setupText();
-
-        // Auto-scroll animation
-        const autoScroll = () => {
-            if (!isDragging && carousel) {
-                currentX -= animationSpeed;
-
-                // Reset when one segment is fully scrolled
-                if (currentX <= -segmentWidth) {
-                    currentX = 0;
-                }
-
-                carousel.style.transform = `translateX(${currentX}px)`;
-            }
-            requestAnimationFrame(autoScroll);
-        };
-
-        carousel.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX - currentX;
-            animationSpeed = 0;
-            e.preventDefault();
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging || !carousel) return;
-
-            e.preventDefault();
-            currentX = e.clientX - startX;
-
-            // Keep within bounds for seamless loop
-            if (currentX > 0) {
-                currentX = -segmentWidth + (currentX % segmentWidth);
-            } else if (currentX < -segmentWidth) {
-                currentX = currentX % segmentWidth;
-            }
-
-            carousel.style.transform = `translateX(${currentX}px)`;
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                animationSpeed = 1;
-            }
-        });
-
-        carousel.addEventListener(
-            'touchstart',
-            (e) => {
-                isDragging = true;
-                startX = e.touches[0].clientX - currentX;
-                animationSpeed = 0;
-                e.preventDefault();
-            },
-            { passive: false }
-        );
-
-        carousel.addEventListener(
-            'touchmove',
-            (e) => {
-                if (!isDragging || !carousel) return;
-
-                e.preventDefault();
-                currentX = e.touches[0].clientX - startX;
-
-                // Keep within bounds for seamless loop
-                if (currentX > 0) {
-                    currentX = -segmentWidth + (currentX % segmentWidth);
-                } else if (currentX < -segmentWidth) {
-                    currentX = currentX % segmentWidth;
-                }
-
-                carousel.style.transform = `translateX(${currentX}px)`;
-            },
-            { passive: false }
-        );
-
-        carousel.addEventListener('touchend', () => {
-            isDragging = false;
-            animationSpeed = 1;
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            segmentWidth = setupText();
-            currentX = 0; // Reset position on resize
-        });
-
-        // Start the animation
-        autoScroll();
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCarousel);
-    } else {
-        initCarousel();
-    }
+        toggleIcon();
+        window.addEventListener('scroll', toggleIcon, { passive: true });
+    });
 </script>

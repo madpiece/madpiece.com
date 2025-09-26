@@ -1,6 +1,6 @@
 import posthog from 'posthog-js';
 
-export function EmailSpan({ children, ...props }) {
+export function EmailTrack({ children, ...props }) {
     const handleCopy = () => {
         posthog.capture('email_copied', {
             email: children.props.value,
