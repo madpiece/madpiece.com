@@ -119,6 +119,23 @@ import NotionBlock from './NotionBlock.astro';
         };
 
         toggleIcon();
+
         window.addEventListener('scroll', toggleIcon, { passive: true });
+
+        scrollDownIcon.addEventListener('click', () => {
+            const target = document.querySelector('.we-container');
+            if (!target) return;
+
+            const rect = target.getBoundingClientRect();
+            const targetCenterOffset =
+                rect.top +
+                window.scrollY -
+                (window.innerHeight - rect.height) / 2;
+
+            window.scrollTo({
+                top: Math.max(0, targetCenterOffset),
+                behavior: 'smooth',
+            });
+        });
     });
 </script>
