@@ -1,0 +1,29 @@
+---
+
+---
+
+<div id="page-loader" class="page-loader">
+    <img src="/logo.png" alt="madpiece logo" />
+</div>
+
+<script>
+    const loader = document.getElementById('page-loader');
+    const hideLoader = () => {
+        if (!loader) return;
+        loader.classList.add('is-hidden');
+        loader.addEventListener(
+            'transitionend',
+            () =>
+                loader.parentElement &&
+                loader.parentElement.removeChild(loader),
+            { once: true }
+        );
+    };
+
+    const fontsReady =
+        (document.fonts && document.fonts.ready) || Promise.resolve();
+    const windowLoaded = new Promise((resolve) =>
+        window.addEventListener('load', resolve, { once: true })
+    );
+    Promise.race([fontsReady, windowLoaded]).then(hideLoader);
+</script>

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Head from '../components/Head.astro';
 import { PosthogProvider } from '../components/PosthogProvider.tsx';
+import Loader from '../components/Loader.astro';
 ---
 
 <!doctype html>
@@ -10,32 +11,8 @@ import { PosthogProvider } from '../components/PosthogProvider.tsx';
         <Head />
     </head>
     <body>
-        <div id="app-loader" class="app-loader">
-            <img src="/logo.png" alt="madpiece logo" />
-        </div>
         <PosthogProvider client:only="preact" />
+        <Loader />
         <slot />
-
-        <script>
-            const loader = document.getElementById('app-loader');
-            const hideLoader = () => {
-                if (!loader) return;
-                loader.classList.add('is-hidden');
-                loader.addEventListener(
-                    'transitionend',
-                    () =>
-                        loader.parentElement &&
-                        loader.parentElement.removeChild(loader),
-                    { once: true }
-                );
-            };
-
-            const fontsReady =
-                (document.fonts && document.fonts.ready) || Promise.resolve();
-            const windowLoaded = new Promise((resolve) =>
-                window.addEventListener('load', resolve, { once: true })
-            );
-            Promise.race([fontsReady, windowLoaded]).then(hideLoader);
-        </script>
     </body>
 </html>
