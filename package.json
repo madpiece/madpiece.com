@@ -12,10 +12,10 @@
     "dependencies": {
         "@astrojs/netlify": "^6.5.11",
         "@astrojs/preact": "^4.1.1",
-        "@tailwindcss/vite": "^4.1.13",
+        "@tailwindcss/vite": "^4.1.14",
         "astro": "^5.14.1",
-        "posthog-js": "^1.268.9",
+        "posthog-js": "^1.270.0",
         "preact": "^10.27.2",
-        "tailwindcss": "^4.1.13"
+        "tailwindcss": "^4.1.14"
     }
 }
