@@ -13,5 +13,19 @@ export default defineConfig({
 
     vite: {
         plugins: [tailwindcss()],
+        server: {
+            proxy: {
+                '/ph-events': {
+                    target: 'https://eu.i.posthog.com',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/ph-events/, ''),
+                },
+                '/ph-static': {
+                    target: 'https://eu-assets.i.posthog.com',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/ph-static/, ''),
+                },
+            },
+        },
     },
 });
