@@ -27,7 +27,7 @@ export function PosthogProvider() {
             capture_pageview: isProd,
             capture_pageleave: false,
             request_batching: true,
-            debug: isProd,
+            debug: !isProd,
             // Avoid loading external dependencies/CDN when blocked
             disable_external_dependency_loading: true,
             // Avoid the initial decide/flags request to reduce external calls
