@@ -14,7 +14,7 @@ body {
     color: var(--marble);
 }
 
-a {
+a:not(.button) {
     position: relative;
     padding-bottom: 0.3em;
 
