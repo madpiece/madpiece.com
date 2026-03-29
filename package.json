@@ -10,12 +10,12 @@
         "clean": "rm -rf node_modules dist pnpm-lock.yaml"
     },
     "dependencies": {
-        "@astrojs/netlify": "^7.0.3",
-        "@astrojs/preact": "^5.0.1",
-        "@tailwindcss/vite": "^4.2.1",
-        "astro": "^6.0.5",
-        "posthog-js": "^1.361.0",
+        "@astrojs/netlify": "^7.0.5",
+        "@astrojs/preact": "^5.1.0",
+        "@tailwindcss/vite": "^4.2.2",
+        "astro": "^6.1.1",
+        "posthog-js": "^1.364.1",
         "preact": "^10.29.0",
-        "tailwindcss": "^4.2.1"
+        "tailwindcss": "^4.2.2"
     }
 }
