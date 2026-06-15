@@ -1,9 +1,10 @@
 ---
-
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 ---
 
 <div id="page-loader" class="page-loader">
-    <img src="/logo.png" alt="madpiece logo" />
+    <Image src={logo} alt="madpiece logo" />
 </div>
 
 <script>
@@ -16,14 +17,14 @@
             () =>
                 loader.parentElement &&
                 loader.parentElement.removeChild(loader),
-            { once: true }
+            { once: true },
         );
     };
 
     const fontsReady =
         (document.fonts && document.fonts.ready) || Promise.resolve();
     const windowLoaded = new Promise((resolve) =>
-        window.addEventListener('load', resolve, { once: true })
+        window.addEventListener('load', resolve, { once: true }),
     );
     Promise.race([fontsReady, windowLoaded]).then(hideLoader);
 </script>

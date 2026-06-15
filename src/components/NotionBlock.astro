@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import logo from '../assets/logo_black.png';
 import { LinkTrack } from './LinkTrack';
 
 const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
@@ -27,13 +28,13 @@ async function getDatabaseStats(databaseId: string) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(requestBody),
-            }
+            },
         );
 
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(
-                `HTTP error! status: ${response.status}, message: ${errorText}`
+                `HTTP error! status: ${response.status}, message: ${errorText}`,
             );
         }
 
@@ -95,7 +96,7 @@ try {
     class="ideas-container flex flex-row items-center border-1 border-gray-300 my-5"
 >
     <div class="img-container flex items-center flex-none">
-        <Image src="/logo_black.png" alt="madpiece logo" />
+        <Image src={logo} alt="madpiece logo" />
     </div>
     <div class="stats-container flex flex-col justify-center">
         <p class="stats-total">
