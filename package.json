@@ -7,15 +7,15 @@
         "build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "clean": "rm -rf node_modules dist pnpm-lock.yaml"
+        "clean": "rm -rf node_modules dist"
     },
     "dependencies": {
-        "@astrojs/netlify": "^7.0.6",
-        "@astrojs/preact": "^5.1.1",
-        "@tailwindcss/vite": "^4.2.2",
-        "astro": "^6.1.5",
-        "posthog-js": "^1.367.0",
-        "preact": "^10.29.1",
-        "tailwindcss": "^4.2.2"
+        "@astrojs/netlify": "^7.0.13",
+        "@astrojs/preact": "^5.1.5",
+        "@tailwindcss/vite": "^4.3.1",
+        "astro": "^6.4.6",
+        "posthog-js": "^1.386.6",
+        "preact": "^10.29.2",
+        "tailwindcss": "^4.3.1"
     }
 }
