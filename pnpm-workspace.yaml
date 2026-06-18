@@ -3,3 +3,8 @@ allowBuilds:
   core-js: true
   esbuild: true
   sharp: true
+minimumReleaseAgeExclude:
+  - '@posthog/core@1.35.1'
+  - '@posthog/types@1.390.0'
+  - astro@6.4.8
+  - posthog-js@1.390.2
