@@ -6,16 +6,15 @@
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
-        "astro": "astro",
-        "clean": "rm -rf node_modules dist"
+        "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/netlify": "^7.0.13",
-        "@astrojs/preact": "^5.1.5",
+        "@astrojs/netlify": "^8.0.0",
+        "@astrojs/preact": "^6.0.0",
         "@tailwindcss/vite": "^4.3.1",
-        "astro": "^6.4.8",
-        "posthog-js": "^1.390.2",
-        "preact": "^10.29.2",
+        "astro": "^7.0.3",
+        "posthog-js": "^1.396.1",
+        "preact": "^10.29.3",
         "tailwindcss": "^4.3.1"
     }
 }
