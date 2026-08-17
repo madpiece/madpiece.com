@@ -3,5 +3,5 @@ allowBuilds:
   esbuild: true
   sharp: true
 minimumReleaseAgeExclude:
-  - '@posthog/browser-common@0.2.0'
-  - posthog-js@1.406.2
+  - '@posthog/core@1.48.2'
+  - posthog-js@1.417.2
