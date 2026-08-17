@@ -1,6 +1,6 @@
 # madpiece.com
 
-We are the multi-disciplinary collective developing the ideas behind the creative label madpiece.
+We are the multidisciplinary collective developing the ideas behind the creative label madpiece.
 
 [Website](https://madpiece.com)
 ·
