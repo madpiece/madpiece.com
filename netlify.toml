@@ -6,9 +6,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-    # PostHog is proxied through same-origin /ph-events and /ph-static, so
-    # 'self' covers analytics. Verify against a real deploy before tightening.
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    # No Content-Security-Policy here: a hand-written script-src 'self' blocks
+    # Astro's inline island-hydration scripts. Add one via Astro's built-in CSP
+    # (experimental.csp), which emits per-script hashes, rather than by hand.
 
 [[redirects]]
   from = "/ph-events/*"
