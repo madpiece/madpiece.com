@@ -5,7 +5,13 @@ import NotionBlock from './NotionBlock.astro';
 ---
 
 <main class="mb-20">
-    <div id="scrolldown-icon" class="scrolldown-icon">
+    <div
+        id="scrolldown-icon"
+        class="scrolldown-icon"
+        role="button"
+        tabindex="0"
+        aria-label="Scroll to content"
+    >
         <div class="chevrons">
             <div class="chevronDown"></div>
             <div class="chevronDown"></div>
@@ -39,13 +45,15 @@ import NotionBlock from './NotionBlock.astro';
             </p>
             <p class="we-for_companies mt-10">
                 For collaborations and commissioned projects - <EmailTrack
-                    client:load>collab&#64;madpiece&#46;com</EmailTrack
+                    client:load
+                    email="collab@madpiece.com"
+                    >collab&#64;madpiece&#46;com</EmailTrack
                 >
             </p>
         </article>
 
         <article class="manifesto-container">
-            <h1>Manifesto</h1>
+            <h2>Manifesto</h2>
             <div>
                 <h3>People first</h3>
                 <p>
@@ -122,7 +130,7 @@ import NotionBlock from './NotionBlock.astro';
 
         window.addEventListener('scroll', toggleIcon, { passive: true });
 
-        scrollDownIcon.addEventListener('click', () => {
+        const scrollToContent = () => {
             const target = document.querySelector('.we-container');
             if (!target) return;
 
@@ -136,6 +144,14 @@ import NotionBlock from './NotionBlock.astro';
                 top: Math.max(0, targetCenterOffset),
                 behavior: 'smooth',
             });
+        };
+
+        scrollDownIcon.addEventListener('click', scrollToContent);
+        scrollDownIcon.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                scrollToContent();
+            }
         });
     });
 </script>

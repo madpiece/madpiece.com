@@ -2,7 +2,7 @@ import { useEffect } from 'preact/hooks';
 import posthog from 'posthog-js';
 
 export function PosthogProvider() {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = import.meta.env.PROD;
 
     useEffect(() => {
         const hasWindow = typeof window !== 'undefined';

@@ -261,7 +261,7 @@ a:not(.button) {
 }
 
 .manifesto-container {
-    h1 {
+    h2 {
         font-family: var(--JosefinSans);
         font-weight: 600;
         font-size: 6em;

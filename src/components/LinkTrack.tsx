@@ -1,21 +1,35 @@
 import posthog from 'posthog-js';
+import type { ComponentChildren } from 'preact';
 
-export function LinkTrack({ children, ...props }) {
-    const handleClick = (captureEvent) => {
+type LinkTrackProps = {
+    href: string;
+    captureEvent: string;
+    class?: string;
+    children?: ComponentChildren;
+};
+
+export function LinkTrack({
+    children,
+    href,
+    captureEvent,
+    class: className,
+}: LinkTrackProps) {
+    const handleClick = () => {
         posthog.capture(captureEvent, {
-            link: props.href,
+            link: href,
             page_url: window.location.href,
         });
     };
 
     return (
         <a
-            href={props.href}
-            class={props.class}
-            onClick={() => handleClick(props.captureEvent)}
+            href={href}
+            class={className}
+            onClick={handleClick}
             target="_blank"
+            rel="noopener noreferrer"
         >
-            {children.props.value}
+            {children}
         </a>
     );
 }

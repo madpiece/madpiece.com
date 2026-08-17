@@ -6,11 +6,35 @@ import { LinkTrack } from './LinkTrack';
 const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
 const DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
 
-async function getDatabaseStats(databaseId: string) {
+interface NotionMultiSelectItem {
+    name?: string;
+}
+
+interface NotionPage {
+    properties: {
+        Category?: {
+            type?: string;
+            multi_select?: NotionMultiSelectItem[];
+        };
+    };
+}
+
+interface NotionQueryResponse {
+    results: NotionPage[];
+    has_more: boolean;
+    next_cursor: string | null;
+}
+
+interface DatabaseStats {
+    totalRows: number;
+    categories: { name: string; count: number }[];
+}
+
+async function getDatabaseStats(databaseId: string): Promise<DatabaseStats> {
     let hasMore = true;
-    let nextCursor = undefined;
+    let nextCursor: string | undefined = undefined;
     let totalRows = 0;
-    const categoryCounts = {};
+    const categoryCounts: Record<string, number> = {};
 
     while (hasMore) {
         const requestBody = {
@@ -38,17 +62,16 @@ async function getDatabaseStats(databaseId: string) {
             );
         }
 
-        const data = await response.json();
+        const data: NotionQueryResponse = await response.json();
         totalRows += data.results.length;
 
-        // Count categories for each row
+        // multi_select: a row counts under each of its categories (or "NoCategory").
         data.results.forEach((page) => {
             const categoryProperty = page.properties.Category;
             if (
                 categoryProperty?.type === 'multi_select' &&
                 categoryProperty.multi_select
             ) {
-                // If a row has multiple categories, count it for each one
                 categoryProperty.multi_select.forEach((item) => {
                     if (item.name) {
                         categoryCounts[item.name] =
@@ -56,17 +79,15 @@ async function getDatabaseStats(databaseId: string) {
                     }
                 });
             } else {
-                // Count rows without any categories
                 categoryCounts['NoCategory'] =
                     (categoryCounts['NoCategory'] || 0) + 1;
             }
         });
 
         hasMore = data.has_more;
-        nextCursor = data.next_cursor;
+        nextCursor = data.next_cursor ?? undefined;
     }
 
-    // Sort categories by count (descending)
     const sortedCategories = Object.entries(categoryCounts)
         .sort(([, a], [, b]) => b - a)
         .map(([name, count]) => ({ name, count }));
@@ -77,17 +98,17 @@ async function getDatabaseStats(databaseId: string) {
     };
 }
 
-let stats = null;
-let error = null;
+let stats: DatabaseStats | null = null;
 
 try {
     if (!DATABASE_ID || !NOTION_TOKEN) {
-        throw new Error('Missing environment variables');
+        throw new Error('Missing Notion environment variables');
     }
 
     stats = await getDatabaseStats(DATABASE_ID);
 } catch (e) {
-    error = e.message || 'Unknown error';
+    // Fail soft: render the "TBD" placeholders below instead of breaking.
+    console.error('NotionBlock: failed to load database stats:', e);
 }
 ---
 

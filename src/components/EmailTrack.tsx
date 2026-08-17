@@ -1,16 +1,18 @@
 import posthog from 'posthog-js';
+import type { ComponentChildren } from 'preact';
 
-export function EmailTrack({ children, ...props }) {
+type EmailTrackProps = {
+    email: string;
+    children?: ComponentChildren;
+};
+
+export function EmailTrack({ children, email }: EmailTrackProps) {
     const handleCopy = () => {
         posthog.capture('email_copied', {
-            email: children.props.value,
+            email,
             page_url: window.location.href,
         });
     };
 
-    return (
-        <span onCopy={handleCopy} {...props}>
-            {children}
-        </span>
-    );
+    return <span onCopy={handleCopy}>{children}</span>;
 }
