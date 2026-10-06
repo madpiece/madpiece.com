@@ -11,6 +11,9 @@ export default defineConfig({
     integrations: [preact()],
     adapter: netlify(),
 
+    server: {
+        host: !!process.env.DEVCONTAINER,
+    },
     vite: {
         plugins: [tailwindcss()],
         server: {

@@ -40,6 +40,13 @@
             }
         }
     },
+    "forwardPorts": [4321],
+    "portsAttributes": {
+        "4321": {
+            "label": "Astro dev server",
+            "onAutoForward": "notify"
+        }
+    },
     "remoteUser": "node",
     "mounts": [
         "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",

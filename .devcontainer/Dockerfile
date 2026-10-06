@@ -61,6 +61,12 @@ USER node
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
 ENV PATH=$PATH:/usr/local/share/npm-global/bin
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Verify pnpm installation
+RUN pnpm -v
+
 # Set the default shell to zsh rather than sh
 ENV SHELL=/bin/zsh
 
