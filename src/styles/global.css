@@ -29,7 +29,9 @@ a:not(.button) {
         opacity: 0.5;
         transform: scale(0.25);
         transform-origin: center;
-        transition: opacity 300ms, transform 300ms;
+        transition:
+            opacity 300ms,
+            transform 300ms;
 
         @media screen and (max-width: 40rem) {
             transform: scale(1);
@@ -58,10 +60,9 @@ a:not(.button) {
         pointer-events: none;
     }
 
-    img {
+    svg {
         width: 64px;
         height: auto;
-        will-change: transform, opacity;
         animation: logo-pulse 1500ms ease-in-out infinite;
     }
 }
@@ -69,17 +70,14 @@ a:not(.button) {
 @keyframes logo-pulse {
     0% {
         opacity: 0.5;
-        transform: scale(0.9);
     }
 
     50% {
         opacity: 1;
-        transform: scale(1);
     }
 
     100% {
         opacity: 0.5;
-        transform: scale(0.9);
     }
 }
 
