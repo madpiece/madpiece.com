@@ -1,16 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
+import Logo from '../assets/logo_white.svg';
 ---
 
 <div id="page-loader" class="page-loader" aria-hidden="true">
-    <Image
-        src={logo}
-        alt=""
-        width={128}
-        loading="eager"
-        fetchpriority="high"
-    />
+    <Logo />
 </div>
 
 <script>
