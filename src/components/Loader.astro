@@ -3,8 +3,14 @@ import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 ---
 
-<div id="page-loader" class="page-loader">
-    <Image src={logo} alt="madpiece logo" />
+<div id="page-loader" class="page-loader" aria-hidden="true">
+    <Image
+        src={logo}
+        alt=""
+        width={128}
+        loading="eager"
+        fetchpriority="high"
+    />
 </div>
 
 <script>
