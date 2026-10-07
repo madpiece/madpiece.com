@@ -61,6 +61,7 @@ a:not(.button) {
     img {
         width: 64px;
         height: auto;
+        will-change: transform, opacity;
         animation: logo-pulse 1500ms ease-in-out infinite;
     }
 }
